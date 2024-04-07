@@ -2,12 +2,12 @@ name: ci
 on:
   pull_request:
     branches:
-    - master
+    - main
   push:
     branches:
-    - master
+    - main
   schedule:
-  - cron: '00 01 * * *'
+    - cron: '5 16 * * 6'
 
 # The section is needed to drop write-all permissions that are granted on
 # `schedule` event. By specifying any permission explicitly all others are set
@@ -131,14 +131,6 @@ jobs:
       if: matrix.build != 'pinned'
       run: ${{ env.CARGO }} test --verbose --no-default-features --lib $TARGET
 
-    - name: Tests (i128)
-      if: matrix.build != 'pinned'
-      run: ${{ env.CARGO }} test --verbose --features i128 $TARGET
-
-    - name: Tests (no default, lib only, i128)
-      if: matrix.build != 'pinned'
-      run: ${{ env.CARGO }} test --verbose --no-default-features --features i128 --lib $TARGET
-
     - name: Compile benchmarks
       if: matrix.build == 'nightly'
       run: cargo bench --verbose --no-run $TARGET
@@ -146,14 +138,6 @@ jobs:
     - name: Compile benchmarks (no default)
       if: matrix.build == 'nightly'
       run: cargo bench --verbose --no-run --no-default-features $TARGET
-
-    - name: Compile benchmarks (i128)
-      if: matrix.build == 'nightly'
-      run: cargo bench --verbose --no-run --features i128 $TARGET
-
-    - name: Compile benchmarks (no default, i128)
-      if: matrix.build == 'nightly'
-      run: cargo bench --verbose --no-run --no-default-features --features i128 $TARGET
 
   miri:
     runs-on: ubuntu-latest
