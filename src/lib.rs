@@ -73,7 +73,7 @@ cases.
 // provokes lots of dead code warnings. So we just squash them.
 #![cfg_attr(miri, allow(dead_code, unused_macros))]
 
-use core::{convert::TryInto, fmt::Debug, hash::Hash, mem::align_of, slice};
+use core::{fmt::Debug, hash::Hash};
 
 #[cfg(feature = "std")]
 pub use crate::io::{ReadBytesExt, WriteBytesExt};
@@ -1035,13 +1035,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_i16_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    #[inline]
-    fn read_i16_into(src: &[u8], dst: &mut [i16]) {
-        let dst = unsafe {
-            slice::from_raw_parts_mut(dst.as_mut_ptr() as *mut u16, dst.len())
-        };
-        Self::read_u16_into(src, dst)
-    }
+    fn read_i16_into(src: &[u8], dst: &mut [i16]);
 
     /// Reads signed 32 bit integers from `src` into `dst`.
     ///
@@ -1064,13 +1058,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_i32_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    #[inline]
-    fn read_i32_into(src: &[u8], dst: &mut [i32]) {
-        let dst = unsafe {
-            slice::from_raw_parts_mut(dst.as_mut_ptr() as *mut u32, dst.len())
-        };
-        Self::read_u32_into(src, dst);
-    }
+    fn read_i32_into(src: &[u8], dst: &mut [i32]);
 
     /// Reads signed 64 bit integers from `src` into `dst`.
     ///
@@ -1093,13 +1081,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_i64_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    #[inline]
-    fn read_i64_into(src: &[u8], dst: &mut [i64]) {
-        let dst = unsafe {
-            slice::from_raw_parts_mut(dst.as_mut_ptr() as *mut u64, dst.len())
-        };
-        Self::read_u64_into(src, dst);
-    }
+    fn read_i64_into(src: &[u8], dst: &mut [i64]);
 
     /// Reads signed 128 bit integers from `src` into `dst`.
     ///
@@ -1122,13 +1104,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_i128_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    #[inline]
-    fn read_i128_into(src: &[u8], dst: &mut [i128]) {
-        let dst = unsafe {
-            slice::from_raw_parts_mut(dst.as_mut_ptr() as *mut u128, dst.len())
-        };
-        Self::read_u128_into(src, dst);
-    }
+    fn read_i128_into(src: &[u8], dst: &mut [i128]);
 
     /// Reads IEEE754 single-precision (4 bytes) floating point numbers from
     /// `src` into `dst`.
@@ -1152,14 +1128,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_f32_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    #[inline]
-    fn read_f32_into(src: &[u8], dst: &mut [f32]) {
-        let dst = unsafe {
-            const _: () = assert!(align_of::<u32>() <= align_of::<f32>());
-            slice::from_raw_parts_mut(dst.as_mut_ptr() as *mut u32, dst.len())
-        };
-        Self::read_u32_into(src, dst);
-    }
+    fn read_f32_into(src: &[u8], dst: &mut [f32]);
 
     /// **DEPRECATED**.
     ///
@@ -1214,14 +1183,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_f64_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    #[inline]
-    fn read_f64_into(src: &[u8], dst: &mut [f64]) {
-        let dst = unsafe {
-            const _: () = assert!(align_of::<u64>() <= align_of::<f64>());
-            slice::from_raw_parts_mut(dst.as_mut_ptr() as *mut u64, dst.len())
-        };
-        Self::read_u64_into(src, dst);
-    }
+    fn read_f64_into(src: &[u8], dst: &mut [f64]);
 
     /// **DEPRECATED**.
     ///
@@ -1375,10 +1337,10 @@ pub trait ByteOrder:
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
     fn write_i8_into(src: &[i8], dst: &mut [u8]) {
-        let src = unsafe {
-            slice::from_raw_parts(src.as_ptr() as *const u8, src.len())
-        };
-        dst.copy_from_slice(src);
+        assert_eq!(src.len(), dst.len());
+        for (d, s) in dst.iter_mut().zip(src.iter()) {
+            *d = *s as u8;
+        }
     }
 
     /// Writes signed 16 bit integers from `src` into `dst`.
@@ -1402,12 +1364,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_i16_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    fn write_i16_into(src: &[i16], dst: &mut [u8]) {
-        let src = unsafe {
-            slice::from_raw_parts(src.as_ptr() as *const u16, src.len())
-        };
-        Self::write_u16_into(src, dst);
-    }
+    fn write_i16_into(src: &[i16], dst: &mut [u8]);
 
     /// Writes signed 32 bit integers from `src` into `dst`.
     ///
@@ -1430,12 +1387,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_i32_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    fn write_i32_into(src: &[i32], dst: &mut [u8]) {
-        let src = unsafe {
-            slice::from_raw_parts(src.as_ptr() as *const u32, src.len())
-        };
-        Self::write_u32_into(src, dst);
-    }
+    fn write_i32_into(src: &[i32], dst: &mut [u8]);
 
     /// Writes signed 64 bit integers from `src` into `dst`.
     ///
@@ -1458,12 +1410,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_i64_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    fn write_i64_into(src: &[i64], dst: &mut [u8]) {
-        let src = unsafe {
-            slice::from_raw_parts(src.as_ptr() as *const u64, src.len())
-        };
-        Self::write_u64_into(src, dst);
-    }
+    fn write_i64_into(src: &[i64], dst: &mut [u8]);
 
     /// Writes signed 128 bit integers from `src` into `dst`.
     ///
@@ -1486,12 +1433,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_i128_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    fn write_i128_into(src: &[i128], dst: &mut [u8]) {
-        let src = unsafe {
-            slice::from_raw_parts(src.as_ptr() as *const u128, src.len())
-        };
-        Self::write_u128_into(src, dst);
-    }
+    fn write_i128_into(src: &[i128], dst: &mut [u8]);
 
     /// Writes IEEE754 single-precision (4 bytes) floating point numbers from
     /// `src` into `dst`.
@@ -1515,12 +1457,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_f32_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    fn write_f32_into(src: &[f32], dst: &mut [u8]) {
-        let src = unsafe {
-            slice::from_raw_parts(src.as_ptr() as *const u32, src.len())
-        };
-        Self::write_u32_into(src, dst);
-    }
+    fn write_f32_into(src: &[f32], dst: &mut [u8]);
 
     /// Writes IEEE754 double-precision (8 bytes) floating point numbers from
     /// `src` into `dst`.
@@ -1544,12 +1481,7 @@ pub trait ByteOrder:
     /// LittleEndian::read_f64_into(&bytes, &mut numbers_got);
     /// assert_eq!(numbers_given, numbers_got);
     /// ```
-    fn write_f64_into(src: &[f64], dst: &mut [u8]) {
-        let src = unsafe {
-            slice::from_raw_parts(src.as_ptr() as *const u64, src.len())
-        };
-        Self::write_u64_into(src, dst);
-    }
+    fn write_f64_into(src: &[f64], dst: &mut [u8]);
 
     /// Converts the given slice of unsigned 16 bit integers to a particular
     /// endianness.
@@ -1644,13 +1576,7 @@ pub trait ByteOrder:
     /// BigEndian::from_slice_i16(&mut numbers);
     /// assert_eq!(numbers, [5i16.to_be(), 6500i16.to_be()]);
     /// ```
-    #[inline]
-    fn from_slice_i16(src: &mut [i16]) {
-        let src = unsafe {
-            slice::from_raw_parts_mut(src.as_mut_ptr() as *mut u16, src.len())
-        };
-        Self::from_slice_u16(src);
-    }
+    fn from_slice_i16(src: &mut [i16]);
 
     /// Converts the given slice of signed 32 bit integers to a particular
     /// endianness.
@@ -1669,13 +1595,7 @@ pub trait ByteOrder:
     /// BigEndian::from_slice_i32(&mut numbers);
     /// assert_eq!(numbers, [5i32.to_be(), 65000i32.to_be()]);
     /// ```
-    #[inline]
-    fn from_slice_i32(src: &mut [i32]) {
-        let src = unsafe {
-            slice::from_raw_parts_mut(src.as_mut_ptr() as *mut u32, src.len())
-        };
-        Self::from_slice_u32(src);
-    }
+    fn from_slice_i32(src: &mut [i32]);
 
     /// Converts the given slice of signed 64 bit integers to a particular
     /// endianness.
@@ -1694,13 +1614,7 @@ pub trait ByteOrder:
     /// BigEndian::from_slice_i64(&mut numbers);
     /// assert_eq!(numbers, [5i64.to_be(), 65000i64.to_be()]);
     /// ```
-    #[inline]
-    fn from_slice_i64(src: &mut [i64]) {
-        let src = unsafe {
-            slice::from_raw_parts_mut(src.as_mut_ptr() as *mut u64, src.len())
-        };
-        Self::from_slice_u64(src);
-    }
+    fn from_slice_i64(src: &mut [i64]);
 
     /// Converts the given slice of signed 128 bit integers to a particular
     /// endianness.
@@ -1719,13 +1633,7 @@ pub trait ByteOrder:
     /// BigEndian::from_slice_i128(&mut numbers);
     /// assert_eq!(numbers, [5i128.to_be(), 65000i128.to_be()]);
     /// ```
-    #[inline]
-    fn from_slice_i128(src: &mut [i128]) {
-        let src = unsafe {
-            slice::from_raw_parts_mut(src.as_mut_ptr() as *mut u128, src.len())
-        };
-        Self::from_slice_u128(src);
-    }
+    fn from_slice_i128(src: &mut [i128]);
 
     /// Converts the given slice of IEEE754 single-precision (4 bytes) floating
     /// point numbers to a particular endianness.
@@ -1980,6 +1888,36 @@ impl ByteOrder for BigEndian {
     }
 
     #[inline]
+    fn read_i16_into(src: &[u8], dst: &mut [i16]) {
+        read_slice!(src, dst, i16, from_be_bytes);
+    }
+
+    #[inline]
+    fn read_i32_into(src: &[u8], dst: &mut [i32]) {
+        read_slice!(src, dst, i32, from_be_bytes);
+    }
+
+    #[inline]
+    fn read_i64_into(src: &[u8], dst: &mut [i64]) {
+        read_slice!(src, dst, i64, from_be_bytes);
+    }
+
+    #[inline]
+    fn read_i128_into(src: &[u8], dst: &mut [i128]) {
+        read_slice!(src, dst, i128, from_be_bytes);
+    }
+
+    #[inline]
+    fn read_f32_into(src: &[u8], dst: &mut [f32]) {
+        read_slice!(src, dst, f32, from_be_bytes);
+    }
+
+    #[inline]
+    fn read_f64_into(src: &[u8], dst: &mut [f64]) {
+        read_slice!(src, dst, f64, from_be_bytes);
+    }
+
+    #[inline]
     fn write_u16_into(src: &[u16], dst: &mut [u8]) {
         write_slice!(src, dst, u16, to_be_bytes);
     }
@@ -1997,6 +1935,36 @@ impl ByteOrder for BigEndian {
     #[inline]
     fn write_u128_into(src: &[u128], dst: &mut [u8]) {
         write_slice!(src, dst, u128, to_be_bytes);
+    }
+
+    #[inline]
+    fn write_i16_into(src: &[i16], dst: &mut [u8]) {
+        write_slice!(src, dst, i16, to_be_bytes);
+    }
+
+    #[inline]
+    fn write_i32_into(src: &[i32], dst: &mut [u8]) {
+        write_slice!(src, dst, i32, to_be_bytes);
+    }
+
+    #[inline]
+    fn write_i64_into(src: &[i64], dst: &mut [u8]) {
+        write_slice!(src, dst, i64, to_be_bytes);
+    }
+
+    #[inline]
+    fn write_i128_into(src: &[i128], dst: &mut [u8]) {
+        write_slice!(src, dst, i128, to_be_bytes);
+    }
+
+    #[inline]
+    fn write_f32_into(src: &[f32], dst: &mut [u8]) {
+        write_slice!(src, dst, f32, to_be_bytes);
+    }
+
+    #[inline]
+    fn write_f64_into(src: &[f64], dst: &mut [u8]) {
+        write_slice!(src, dst, f64, to_be_bytes);
     }
 
     #[inline]
@@ -2028,6 +1996,42 @@ impl ByteOrder for BigEndian {
 
     #[inline]
     fn from_slice_u128(numbers: &mut [u128]) {
+        if cfg!(target_endian = "little") {
+            for n in numbers {
+                *n = n.to_be();
+            }
+        }
+    }
+
+    #[inline]
+    fn from_slice_i16(numbers: &mut [i16]) {
+        if cfg!(target_endian = "little") {
+            for n in numbers {
+                *n = n.to_be();
+            }
+        }
+    }
+
+    #[inline]
+    fn from_slice_i32(numbers: &mut [i32]) {
+        if cfg!(target_endian = "little") {
+            for n in numbers {
+                *n = n.to_be();
+            }
+        }
+    }
+
+    #[inline]
+    fn from_slice_i64(numbers: &mut [i64]) {
+        if cfg!(target_endian = "little") {
+            for n in numbers {
+                *n = n.to_be();
+            }
+        }
+    }
+
+    #[inline]
+    fn from_slice_i128(numbers: &mut [i128]) {
         if cfg!(target_endian = "little") {
             for n in numbers {
                 *n = n.to_be();
@@ -2148,6 +2152,36 @@ impl ByteOrder for LittleEndian {
     }
 
     #[inline]
+    fn read_i16_into(src: &[u8], dst: &mut [i16]) {
+        read_slice!(src, dst, i16, from_le_bytes);
+    }
+
+    #[inline]
+    fn read_i32_into(src: &[u8], dst: &mut [i32]) {
+        read_slice!(src, dst, i32, from_le_bytes);
+    }
+
+    #[inline]
+    fn read_i64_into(src: &[u8], dst: &mut [i64]) {
+        read_slice!(src, dst, i64, from_le_bytes);
+    }
+
+    #[inline]
+    fn read_i128_into(src: &[u8], dst: &mut [i128]) {
+        read_slice!(src, dst, i128, from_le_bytes);
+    }
+
+    #[inline]
+    fn read_f32_into(src: &[u8], dst: &mut [f32]) {
+        read_slice!(src, dst, f32, from_le_bytes);
+    }
+
+    #[inline]
+    fn read_f64_into(src: &[u8], dst: &mut [f64]) {
+        read_slice!(src, dst, f64, from_le_bytes);
+    }
+
+    #[inline]
     fn write_u16_into(src: &[u16], dst: &mut [u8]) {
         write_slice!(src, dst, u16, to_le_bytes);
     }
@@ -2165,6 +2199,36 @@ impl ByteOrder for LittleEndian {
     #[inline]
     fn write_u128_into(src: &[u128], dst: &mut [u8]) {
         write_slice!(src, dst, u128, to_le_bytes);
+    }
+
+    #[inline]
+    fn write_i16_into(src: &[i16], dst: &mut [u8]) {
+        write_slice!(src, dst, i16, to_le_bytes);
+    }
+
+    #[inline]
+    fn write_i32_into(src: &[i32], dst: &mut [u8]) {
+        write_slice!(src, dst, i32, to_le_bytes);
+    }
+
+    #[inline]
+    fn write_i64_into(src: &[i64], dst: &mut [u8]) {
+        write_slice!(src, dst, i64, to_le_bytes);
+    }
+
+    #[inline]
+    fn write_i128_into(src: &[i128], dst: &mut [u8]) {
+        write_slice!(src, dst, i128, to_le_bytes);
+    }
+
+    #[inline]
+    fn write_f32_into(src: &[f32], dst: &mut [u8]) {
+        write_slice!(src, dst, f32, to_le_bytes);
+    }
+
+    #[inline]
+    fn write_f64_into(src: &[f64], dst: &mut [u8]) {
+        write_slice!(src, dst, f64, to_le_bytes);
     }
 
     #[inline]
@@ -2196,6 +2260,42 @@ impl ByteOrder for LittleEndian {
 
     #[inline]
     fn from_slice_u128(numbers: &mut [u128]) {
+        if cfg!(target_endian = "big") {
+            for n in numbers {
+                *n = n.to_le();
+            }
+        }
+    }
+
+    #[inline]
+    fn from_slice_i16(numbers: &mut [i16]) {
+        if cfg!(target_endian = "big") {
+            for n in numbers {
+                *n = n.to_le();
+            }
+        }
+    }
+
+    #[inline]
+    fn from_slice_i32(numbers: &mut [i32]) {
+        if cfg!(target_endian = "big") {
+            for n in numbers {
+                *n = n.to_le();
+            }
+        }
+    }
+
+    #[inline]
+    fn from_slice_i64(numbers: &mut [i64]) {
+        if cfg!(target_endian = "big") {
+            for n in numbers {
+                *n = n.to_le();
+            }
+        }
+    }
+
+    #[inline]
+    fn from_slice_i128(numbers: &mut [i128]) {
         if cfg!(target_endian = "big") {
             for n in numbers {
                 *n = n.to_le();
@@ -3806,7 +3906,6 @@ mod stdtests {
 
                 #[test]
                 fn big_endian() {
-                    #[allow(unused_unsafe)]
                     fn prop(numbers: Vec<$ty_int>) -> bool {
                         let numbers: Vec<_> =
                             numbers.into_iter().map(|x| x.clone()).collect();
@@ -3816,9 +3915,7 @@ mod stdtests {
                         BigEndian::$write(&numbers, &mut bytes);
 
                         let mut got = vec![$zero; numbers.len()];
-                        unsafe {
-                            BigEndian::$read(&bytes, &mut got);
-                        }
+                        BigEndian::$read(&bytes, &mut got);
 
                         numbers == got
                     }
@@ -3827,7 +3924,6 @@ mod stdtests {
 
                 #[test]
                 fn little_endian() {
-                    #[allow(unused_unsafe)]
                     fn prop(numbers: Vec<$ty_int>) -> bool {
                         let numbers: Vec<_> =
                             numbers.into_iter().map(|x| x.clone()).collect();
@@ -3837,9 +3933,7 @@ mod stdtests {
                         LittleEndian::$write(&numbers, &mut bytes);
 
                         let mut got = vec![$zero; numbers.len()];
-                        unsafe {
-                            LittleEndian::$read(&bytes, &mut got);
-                        }
+                        LittleEndian::$read(&bytes, &mut got);
 
                         numbers == got
                     }
@@ -3848,7 +3942,6 @@ mod stdtests {
 
                 #[test]
                 fn native_endian() {
-                    #[allow(unused_unsafe)]
                     fn prop(numbers: Vec<$ty_int>) -> bool {
                         let numbers: Vec<_> =
                             numbers.into_iter().map(|x| x.clone()).collect();
@@ -3858,9 +3951,7 @@ mod stdtests {
                         NativeEndian::$write(&numbers, &mut bytes);
 
                         let mut got = vec![$zero; numbers.len()];
-                        unsafe {
-                            NativeEndian::$read(&bytes, &mut got);
-                        }
+                        NativeEndian::$read(&bytes, &mut got);
 
                         numbers == got
                     }
