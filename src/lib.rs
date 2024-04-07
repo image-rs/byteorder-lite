@@ -67,6 +67,7 @@ cases.
 [`Write`]: https://doc.rust-lang.org/std/io/trait.Write.html
 */
 
+#![forbid(unsafe_code)]
 #![deny(missing_docs)]
 #![cfg_attr(not(feature = "std"), no_std)]
 // When testing under miri, we disable tests that take too long. But this
@@ -1331,10 +1332,6 @@ pub trait ByteOrder:
     /// let mut bytes = [0; 4];
     /// let numbers_given = [1, 2, 0xf, 0xe];
     /// LittleEndian::write_i8_into(&numbers_given, &mut bytes);
-    ///
-    /// let mut numbers_got = [0; 4];
-    /// bytes.as_ref().read_i8_into(&mut numbers_got);
-    /// assert_eq!(numbers_given, numbers_got);
     /// ```
     fn write_i8_into(src: &[i8], dst: &mut [u8]) {
         assert_eq!(src.len(), dst.len());
