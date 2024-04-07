@@ -14,7 +14,7 @@ use crate::ByteOrder;
 ///
 /// ```rust
 /// use std::io::Cursor;
-/// use byteorder::{BigEndian, ReadBytesExt};
+/// use byteorder_lite::{BigEndian, ReadBytesExt};
 ///
 /// let mut rdr = Cursor::new(vec![2, 5, 3, 0]);
 /// assert_eq!(517, rdr.read_u16::<BigEndian>().unwrap());
@@ -42,7 +42,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::ReadBytesExt;
+    /// use byteorder_lite::ReadBytesExt;
     ///
     /// let mut rdr = Cursor::new(vec![2, 5]);
     /// assert_eq!(2, rdr.read_u8().unwrap());
@@ -72,7 +72,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::ReadBytesExt;
+    /// use byteorder_lite::ReadBytesExt;
     ///
     /// let mut rdr = Cursor::new(vec![0x02, 0xfb]);
     /// assert_eq!(2, rdr.read_i8().unwrap());
@@ -99,7 +99,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![2, 5, 3, 0]);
     /// assert_eq!(517, rdr.read_u16::<BigEndian>().unwrap());
@@ -126,7 +126,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0x00, 0xc1, 0xff, 0x7c]);
     /// assert_eq!(193, rdr.read_i16::<BigEndian>().unwrap());
@@ -153,7 +153,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0x00, 0x01, 0x0b]);
     /// assert_eq!(267, rdr.read_u24::<BigEndian>().unwrap());
@@ -179,7 +179,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0xff, 0x7a, 0x33]);
     /// assert_eq!(-34253, rdr.read_i24::<BigEndian>().unwrap());
@@ -205,7 +205,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0x00, 0x00, 0x01, 0x0b]);
     /// assert_eq!(267, rdr.read_u32::<BigEndian>().unwrap());
@@ -231,7 +231,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0xff, 0xff, 0x7a, 0x33]);
     /// assert_eq!(-34253, rdr.read_i32::<BigEndian>().unwrap());
@@ -257,7 +257,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0xb6, 0x71, 0x6b, 0xdc, 0x2b, 0x31]);
     /// assert_eq!(200598257150769, rdr.read_u48::<BigEndian>().unwrap());
@@ -283,7 +283,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0x9d, 0x71, 0xab, 0xe7, 0x97, 0x8f]);
     /// assert_eq!(-108363435763825, rdr.read_i48::<BigEndian>().unwrap());
@@ -309,7 +309,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0x00, 0x03, 0x43, 0x95, 0x4d, 0x60, 0x86, 0x83]);
     /// assert_eq!(918733457491587, rdr.read_u64::<BigEndian>().unwrap());
@@ -335,7 +335,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0x80, 0, 0, 0, 0, 0, 0, 0]);
     /// assert_eq!(i64::min_value(), rdr.read_i64::<BigEndian>().unwrap());
@@ -361,7 +361,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![
     ///     0x00, 0x03, 0x43, 0x95, 0x4d, 0x60, 0x86, 0x83,
@@ -390,7 +390,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     /// assert_eq!(i128::min_value(), rdr.read_i128::<BigEndian>().unwrap());
@@ -416,7 +416,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0x80, 0x74, 0xfa]);
     /// assert_eq!(8418554, rdr.read_uint::<BigEndian>(3).unwrap());
@@ -441,7 +441,7 @@ pub trait ReadBytesExt: io::Read {
     ///
     /// ```rust
     /// use std::io::Cursor;
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![0xc1, 0xff, 0x7c]);
     /// assert_eq!(-4063364, rdr.read_int::<BigEndian>(3).unwrap());
@@ -485,7 +485,7 @@ pub trait ReadBytesExt: io::Read {
     /// use std::f32;
     /// use std::io::Cursor;
     ///
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![
     ///     0x40, 0x49, 0x0f, 0xdb,
@@ -516,7 +516,7 @@ pub trait ReadBytesExt: io::Read {
     /// use std::f64;
     /// use std::io::Cursor;
     ///
-    /// use byteorder::{BigEndian, ReadBytesExt};
+    /// use byteorder_lite::{BigEndian, ReadBytesExt};
     ///
     /// let mut rdr = Cursor::new(vec![
     ///     0x40, 0x09, 0x21, 0xfb, 0x54, 0x44, 0x2d, 0x18,
@@ -546,7 +546,7 @@ impl<R: io::Read + ?Sized> ReadBytesExt for R {}
 /// Write unsigned 16 bit big-endian integers to a [`Write`]:
 ///
 /// ```rust
-/// use byteorder::{BigEndian, WriteBytesExt};
+/// use byteorder_lite::{BigEndian, WriteBytesExt};
 ///
 /// let mut wtr = vec![];
 /// wtr.write_u16::<BigEndian>(517).unwrap();
@@ -574,7 +574,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write unsigned 8 bit integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::WriteBytesExt;
+    /// use byteorder_lite::WriteBytesExt;
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_u8(2).unwrap();
@@ -602,7 +602,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write signed 8 bit integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::WriteBytesExt;
+    /// use byteorder_lite::WriteBytesExt;
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_i8(2).unwrap();
@@ -627,7 +627,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write unsigned 16 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_u16::<BigEndian>(517).unwrap();
@@ -654,7 +654,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write signed 16 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_i16::<BigEndian>(193).unwrap();
@@ -681,7 +681,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write unsigned 24 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_u24::<BigEndian>(267).unwrap();
@@ -708,7 +708,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write signed 24 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_i24::<BigEndian>(-34253).unwrap();
@@ -735,7 +735,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write unsigned 32 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_u32::<BigEndian>(267).unwrap();
@@ -762,7 +762,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write signed 32 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_i32::<BigEndian>(-34253).unwrap();
@@ -789,7 +789,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write unsigned 48 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_u48::<BigEndian>(52360336390828).unwrap();
@@ -816,7 +816,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write signed 48 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_i48::<BigEndian>(-108363435763825).unwrap();
@@ -843,7 +843,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write unsigned 64 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_u64::<BigEndian>(918733457491587).unwrap();
@@ -870,7 +870,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write signed 64 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_i64::<BigEndian>(i64::min_value()).unwrap();
@@ -918,7 +918,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write unsigned 40 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_uint::<BigEndian>(312550384361, 5).unwrap();
@@ -954,7 +954,7 @@ pub trait WriteBytesExt: io::Write {
     /// Write signed 56 bit big-endian integers to a `Write`:
     ///
     /// ```rust
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_int::<BigEndian>(-3548172039376767, 7).unwrap();
@@ -1018,7 +1018,7 @@ pub trait WriteBytesExt: io::Write {
     /// ```rust
     /// use std::f32;
     ///
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_f32::<BigEndian>(f32::consts::PI).unwrap();
@@ -1047,7 +1047,7 @@ pub trait WriteBytesExt: io::Write {
     /// ```rust
     /// use std::f64;
     ///
-    /// use byteorder::{BigEndian, WriteBytesExt};
+    /// use byteorder_lite::{BigEndian, WriteBytesExt};
     ///
     /// let mut wtr = Vec::new();
     /// wtr.write_f64::<BigEndian>(f64::consts::PI).unwrap();

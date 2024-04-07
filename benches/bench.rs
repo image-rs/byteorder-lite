@@ -5,7 +5,7 @@ extern crate test;
 macro_rules! bench_num {
     ($name:ident, $ty:ident, $max:ident, $read:ident, $write:ident, $bytes:expr, $data:expr) => {
         mod $name {
-            use byteorder::{
+            use byteorder_lite::{
                 BigEndian, ByteOrder, LittleEndian, NativeEndian,
             };
             use test::black_box as bb;
@@ -80,7 +80,7 @@ macro_rules! bench_num {
     ($ty:ident, $max:ident,
      $read:ident, $write:ident, $data:expr) => {
         mod $ty {
-            use byteorder::{
+            use byteorder_lite::{
                 BigEndian, ByteOrder, LittleEndian, NativeEndian,
             };
             use std::$ty;
@@ -428,7 +428,7 @@ macro_rules! bench_slice {
         mod $name {
             use std::mem::size_of;
 
-            use byteorder::{BigEndian, ByteOrder, LittleEndian};
+            use byteorder_lite::{BigEndian, ByteOrder, LittleEndian};
             use rand::distributions;
             use rand::{self, Rng};
             use test::Bencher;
